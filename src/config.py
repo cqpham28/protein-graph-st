@@ -1,5 +1,12 @@
 """
 
+CONFIG PAGE
+
+
+##################
+Authors: Cuong Pham
+Email: cuongquocpham151@gmail.com
+
 """
 
  

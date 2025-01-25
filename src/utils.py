@@ -1,16 +1,41 @@
+"""
+MIT License
+
+Copyright (c) 2025 Cuong Pham
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+##################
+Authors: Cuong Pham
+Email: cuongquocpham151@gmail.com
+
+"""
+
 from typing import List
 import os
 import pandas as pd
 import streamlit as st
-# import matplotlib.pyplot as plt
-# import mpld3
-# import streamlit.components.v1 as components
-# from PIL import Image
 import omicverse as ov
 from Bio import Entrez, Medline
 # from pyspark.sql import SparkSession
-from datasketch import MinHash, MinHashLSH
-import re
+# from datasketch import MinHash, MinHashLSH
+# import re
 from collections import defaultdict
 import boto3
 
@@ -18,8 +43,9 @@ import boto3
 
 #################
 # @st.cache_data
-def init_s3():
-    ##------S3--------##
+def init_s3() -> None:
+    """Initialize AWS S3 storage bucket, add to st.session_state"""
+
     with st.spinner(f'Connect S3...'):
         # boto3
         session = boto3.Session(
@@ -137,7 +163,7 @@ def _check_valid_genes(genes:str) -> None:
 
 def handle_genes(
     input_genes:List[str]
-):
+) -> List[str]:
     """
     
     """
@@ -175,7 +201,7 @@ def matching_papers_with_gene(
 
     # Matching
     def preprocess(text):
-        """Basic preprocessing: lowercasing and splitting into words."""
+        """lowercasing and splitting into words."""
         return set(text.lower().split())
 
     matches = defaultdict(list)
@@ -215,7 +241,15 @@ def matching_papers_with_gene(
 
 #################
 def _fetch_papers(query:str, retmax:int):
-    """Fetches paper titles related to a disease from PubMed."""
+    """Fetches paper titles related to a disease from PubMed.
+    
+    Args:
+        query (str): the search query 
+        retmax (int): # UIDs from the retrieved set in output 
+
+    Returns:
+        records
+    """
 
     Entrez.email = 'your_email@example.com'
 

@@ -1,17 +1,16 @@
+"""
+Bulk test.
+"""
+
 import omicverse as ov
 import matplotlib.pyplot as plt
 import pandas as pd
+import requests
 
 
 
 def analyze_ppi():
 
-
-    # list_genes = ['FAA4','POX1','FAT1','FAS2','FAS1','FAA1','OLE1']
-    # taxonomy_id = 4932
-
-
-    
     list_genes = [
         'SORT1',
         'ITGB1BP1',
@@ -22,8 +21,7 @@ def analyze_ppi():
         'NCK2',
         'ICA1L'
     ]
-    taxonomy_id = 9606
-
+    taxonomy_id = 9606 # homo sapiens
 
     gene_type_dict=dict(zip(list_genes,['Type1']*3+['Type2']*5))
     gene_color_dict=dict(zip(list_genes,['#F7828A']*3+['#9CCCA4']*5))
@@ -47,7 +45,8 @@ def analyze_ppi():
 
 
 
-def request_kegg():
+def request_kegg() -> None:
+    """use API to get data from KEGG database"""
 
     # Define the base URL for KEGG API
     kegg_base_url = "https://rest.kegg.jp/list/disease"
@@ -74,7 +73,10 @@ def request_kegg():
 
 
 
-def string_interaction(gene:list,species:int) -> pd.DataFrame:
+def string_interaction(
+    gene:list,
+    species:int,
+) -> pd.DataFrame:
     r"""A Python library to analysis the protein-protein interaction network by string-db
   
     Arguments:
@@ -85,7 +87,7 @@ def string_interaction(gene:list,species:int) -> pd.DataFrame:
         res: the dataframe of protein-protein interaction
     
     """
-    import requests ## python -m pip install requests
+
     string_api_url = "https://string-db.org/api"
     output_format = "tsv-no-header"
     method = "network"
